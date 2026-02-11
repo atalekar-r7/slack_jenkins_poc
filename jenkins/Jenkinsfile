@@ -1,16 +1,17 @@
-// 🔹 Webhook trigger for multibranch
+// === Webhook Trigger Configuration ===
 properties([
-  pipelineTriggers([
-    [
-      $class: 'GenericTrigger',
-      token: 'crewai-slack-trigger-very-long-random-token-9x82hd92hd92',
-      causeString: 'Triggered by Slack Approval',
-      printContributedVariables: true,
-      printPostContent: true
-    ]
-  ])
+    pipelineTriggers([
+        [
+            $class: 'GenericTrigger',
+            token: 'crewai-slack-trigger-very-long-random-token-9x82hd92hd92',
+            causeString: 'Triggered by Slack Approval',
+            printContributedVariables: true,
+            printPostContent: true
+        ]
+    ])
 ])
 
+// === Pipeline ===
 pipeline {
     agent any
 
@@ -20,16 +21,27 @@ pipeline {
     }
 
     stages {
+
+        stage('Validate Trigger') {
+            steps {
+                script {
+                    echo "Triggered cause: ${currentBuild.getBuildCauses()}"
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "Building... App: ${params.APP_NAME}, Version: ${params.VERSION}"
             }
         }
+
         stage('Test') {
             steps {
                 echo "Testing... App: ${params.APP_NAME}, Version: ${params.VERSION}"
             }
         }
+
         stage('Deliver') {
             steps {
                 echo "Delivering... App: ${params.APP_NAME}, Version: ${params.VERSION}"
