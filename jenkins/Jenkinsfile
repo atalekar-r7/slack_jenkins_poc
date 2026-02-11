@@ -6,7 +6,19 @@ properties([
       token: 'crewai-slack-trigger-very-long-random-token-9x82hd92hd92',
       causeString: 'Triggered by Slack Approval',
       printContributedVariables: true,
-      printPostContent: true
+      printPostContent: true,
+      
+      // Extract query parameters from webhook URL
+      genericVariables: [
+        [key: 'APP_NAME', value: '$.APP_NAME', expressionType: 'JSONPath', defaultValue: 'my-app'],
+        [key: 'VERSION', value: '$.VERSION', expressionType: 'JSONPath', defaultValue: '1.0.0']
+      ],
+      
+      // Also support query parameters directly
+      genericRequestVariables: [
+        [key: 'APP_NAME', regexpFilter: ''],
+        [key: 'VERSION', regexpFilter: '']
+      ]
     ]
   ])
 ])
