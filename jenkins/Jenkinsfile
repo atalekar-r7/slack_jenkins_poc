@@ -6,24 +6,10 @@ properties([
       token: 'crewai-slack-trigger-very-long-random-token-9x82hd92hd92',
       causeString: 'Triggered by Slack Approval',
       printContributedVariables: true,
-      printPostContent: true,
-      
-      // Extract query parameters from webhook URL
-      genericVariables: [
-        [key: 'APP_NAME', value: '$.APP_NAME', expressionType: 'JSONPath', defaultValue: 'my-app'],
-        [key: 'VERSION', value: '$.VERSION', expressionType: 'JSONPath', defaultValue: '1.0.0']
-      ],
-      
-      // Also support query parameters directly
-      genericRequestVariables: [
-        [key: 'APP_NAME', regexpFilter: ''],
-        [key: 'VERSION', regexpFilter: '']
-      ]
+      printPostContent: true
     ]
   ])
 ])
-
-
 
 pipeline {
     agent any
@@ -33,26 +19,20 @@ pipeline {
         string(name: 'VERSION', defaultValue: '1.0.0', description: 'Version to deploy')
     }
 
-    environment {
-        // Map webhook query params to parameters (query param overrides default)
-        FINAL_APP_NAME = "${env.APP_NAME ?: params.APP_NAME}"
-        FINAL_VERSION = "${env.VERSION ?: params.VERSION}"
-    }
-
     stages {
         stage('Build') {
             steps {
-                echo "Building... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
+                echo "Building... App: ${params.APP_NAME}, Version: ${params.VERSION}"
             }
         }
         stage('Test') {
             steps {
-                echo "Testing... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
+                echo "Testing... App: ${params.APP_NAME}, Version: ${params.VERSION}"
             }
         }
         stage('Deliver') {
             steps {
-                echo "Delivering... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
+                echo "Delivering... App: ${params.APP_NAME}, Version: ${params.VERSION}"
             }
         }
     }
