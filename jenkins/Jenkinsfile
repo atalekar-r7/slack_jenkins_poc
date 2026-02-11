@@ -3,32 +3,14 @@ properties([
   pipelineTriggers([
     [
       $class: 'GenericTrigger',
-
       token: 'crewai-slack-trigger-very-long-random-token-9x82hd92hd92',
-
-      // 🔑 Explicit mapping from query params
-      genericVariables: [
-        [
-          key: 'APP_NAME',
-          value: 'APP_NAME',
-          expressionType: 'QUERY'
-        ],
-        [
-          key: 'VERSION',
-          value: 'VERSION',
-          expressionType: 'QUERY'
-        ]
-      ],
-
-      // 🔥 THIS IS CRITICAL
-      overrideBuildParameters: true,
-
       causeString: 'Triggered by Slack Approval',
       printContributedVariables: true,
       printPostContent: true
     ]
   ])
 ])
+
 
 
 pipeline {
