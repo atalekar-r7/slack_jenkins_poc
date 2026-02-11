@@ -33,20 +33,26 @@ pipeline {
         string(name: 'VERSION', defaultValue: '1.0.0', description: 'Version to deploy')
     }
 
+    environment {
+        // Map webhook query params to parameters (query param overrides default)
+        FINAL_APP_NAME = "${env.APP_NAME ?: params.APP_NAME}"
+        FINAL_VERSION = "${env.VERSION ?: params.VERSION}"
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo "Building... App: ${params.APP_NAME}, Version: ${params.VERSION}"
+                echo "Building... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
             }
         }
         stage('Test') {
             steps {
-                echo "Testing... App: ${params.APP_NAME}, Version: ${params.VERSION}"
+                echo "Testing... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
             }
         }
         stage('Deliver') {
             steps {
-                echo "Delivering... App: ${params.APP_NAME}, Version: ${params.VERSION}"
+                echo "Delivering... App: ${FINAL_APP_NAME}, Version: ${FINAL_VERSION}"
             }
         }
     }
